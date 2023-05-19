@@ -4,13 +4,13 @@ const List = []
 const count = 30
 
 for (let i = 0; i < count; i++) {
-  var order_code = 'O20230519093000001' + i
+  var order_code = '2023051909300000' + i
   List.push(Mock.mock({
-    order_date: +Mock.Random.date('T'),
-    'order_code|1': order_code,
+    order_date: '@datetime',
+    order_code: order_code,
     order_price: '@float(0, 100, 2, 2)',
-    order_status: ['已提交，待付款', '已付款，待发货', '已发货，待收货', '已收货'],
-    custorm_name: Mock.Random.cname(),
+    'order_status|1': ['已提交，待付款', '已付款，待发货', '已发货，待收货', '已收货'],
+    customer_name: '@first',
     sale_name: Mock.Random.cname()
 
     // id: '@increment',
@@ -37,11 +37,11 @@ module.exports = [
     url: '/my-project/order/list',
     type: 'get',
     response: config => {
-      const { order_date, order_code, order_price, order_status, page = 1, limit = 20, sort } = config.query
+      const { order_date, order_code, order_status, customer_name, page = 1, limit = 20, sort } = config.query
       let mockList = List.filter(item => {
         if (order_date && item.order_date !== order_date) return false
         if (order_code && item.order_code !== order_code) return false
-        if (order_price && item.order_price !== order_price) return false
+        if (customer_name && item.customer_name !== customer_name) return false
         if (order_status && item.order_status !== order_status) return false
         return true
       })

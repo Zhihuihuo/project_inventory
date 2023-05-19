@@ -9,7 +9,7 @@ export function getList(params) {
   })
 }
 
-export function detailProduct(id) {
+export function detailOrder(id) {
   return request({
     url: '/my-project/order/detail',
     method: 'get',
@@ -17,7 +17,7 @@ export function detailProduct(id) {
   })
 }
 
-export function createProduct(data) {
+export function createOrder(data) {
   return request({
     url: '/my-project/order/create',
     method: 'post',
@@ -25,7 +25,7 @@ export function createProduct(data) {
   })
 }
 
-export function updateProduct(data) {
+export function updateOrder(data) {
   return request({
     url: '/my-project/order/update',
     method: 'post',

@@ -5,13 +5,14 @@ const user = require('./user')
 const table = require('./table')
 const customer = require('./customer')
 const product = require('./product')
-
+const order = require('./order')
 
 const mocks = [
   ...user,
   ...table,
   ...customer,
-  ...product
+  ...product,
+  ...order
 ]
 
 // for front mock

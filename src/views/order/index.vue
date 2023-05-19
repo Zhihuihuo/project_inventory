@@ -1,54 +1,52 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.orderid" placeholder="订单编号" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.salesman" placeholder="客户姓名" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.name" placeholder="产品名称" style="width: 180px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.models" placeholder="产品型号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in modelsOptions" :key="item" :label="item" :value="item" />
+      <el-input v-model="listQuery.order_date" placeholder="订单日期" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.order_code" placeholder="订单编号" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.custorm_name" placeholder="客户名称" style="width: 180px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.order_status" placeholder="订单状态" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in orderStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
+      </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        添加
       </el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         导出
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row  @sort-change="sortChange">
-      <el-table-column label="订单日期" align="center" width="120px" sortable="custom"  :class-name="getSortClass('id')">
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @sort-change="sortChange">
+      <el-table-column label="订单日期" align="center" width="120px" sortable="custom" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           {{ row.order_date }}
         </template>
       </el-table-column>
       <el-table-column label="订单编号" prop="code" align="center" width="100px">
         <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+          <span>{{ scope.row.order_code }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="客户姓名" align="center" width="90px">
+      <el-table-column label="订单金额" align="center" width="90px">
         <template slot-scope="{row}">
-          {{ row.name }}
+          {{ row.order_price }}
         </template>
       </el-table-column>
-      <el-table-column label="付款日期" align="center" width="120px">
+      <el-table-column label="订单状态" align="center" width="90px">
         <template slot-scope="{row}">
-          {{ row.paydate }}
+          {{ row.order_status }}
         </template>
       </el-table-column>
-      <el-table-column label="付款金额" align="center" width="80px">
+      <el-table-column label="客户名称" align="center" width="90px">
         <template slot-scope="{row}">
-          {{ row.payment }}
+          {{ row.customer_name }}
         </template>
       </el-table-column>
-      <el-table-column label="产品名称" align="center" width="120px">
+      <el-table-column label="业务员" align="center" width="90px">
         <template slot-scope="{row}">
-          {{ row.pname }}
-        </template>
-      </el-table-column>
-      <el-table-column label="订单状态" align="center" width="159px">
-        <template slot-scope="{row}">
-          {{ row.status }}
+          {{ row.sale_name }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -70,13 +68,10 @@
   </div>
 </template>
 
-
 <script>
-import { getList, updateProduct } from '@/api/product'
-import waves from '@/directive/waves' // waves directive
+import { getList, updateProduct } from '@/api/order'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-
 
 export default {
   components: { Pagination },
@@ -90,12 +85,15 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        code: undefined,
-        name: undefined,
-        models: undefined,
+        order_date: undefined,
+        order_code: undefined,
+        order_price: undefined,
+        order_status: undefined,
+        customer_name: undefined,
+        sale_name: undefined,
         sort: '+id'
       },
-      modelsOptions: ['X710','X720','X730','X740','X750'],
+      orderStatusOptions: ['已提交，待付款', '已付款，待发货', '已发货，待收货', '已收货'],
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -105,10 +103,10 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        code: [{ required: true, message: 'code is required', trigger: 'change' }],
-        name: [{ required: true, message: 'phone is required', trigger: 'blur' }],
-        models: [{ required: true, message: 'city is required', trigger: 'blur' }],
-        spec: [{ required: true, message: 'address is required', trigger: 'blur' }],
+        order_date: [{ required: true, message: 'date is required', trigger: 'change' }],
+        order_code: [{ required: true, message: 'code is required', trigger: 'blur' }],
+        order_price: [{ required: true, message: 'order_price is required', trigger: 'blur' }],
+        customer_name: [{ required: true, message: 'customer_name is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -202,13 +200,13 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['产品编码', '产品名称', '产品型号', '产品规格','单位','数量','备注']
-        const filterVal = ['code', 'name', 'models', 'spec','unit','count','desc']
+        const tHeader = ['订单日期', '订单编号', '订单金额', '客户名称', '业务员', '订单状态', '备注']
+        const filterVal = ['order_date', 'order_code', 'order_price', 'customer_name', 'sale_name', 'order_status', 'desc']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: '产品列表'
+          filename: '订单列表'
         })
         this.downloadLoading = false
       })

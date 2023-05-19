@@ -10,8 +10,8 @@ for (let i = 0; i < count; i++) {
     pname: '@first',
     'ptype|1': ['X710', 'X720', 'X730', 'X740', 'X750'],
     'pspec|1': ['100*100','100*130','100*150','100*180','100*200','150*150'],
-    // count: '@integer(300, 5000)', 
-    // price: '@float(0, 100, 2, 2)', 
+    count: '@integer(300, 5000)', 
+    in_price: '@float(0, 100, 2, 2)', 
     desc: '@first'
 
     // id: '@increment',

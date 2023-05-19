@@ -29,17 +29,17 @@
       </el-table-column>
       <el-table-column label="产品编码" prop="code" sortable="custom" align="center" width="130px" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span>{{ row.code }}</span>
+          <span>{{ row.pcode }}</span>
         </template>
       </el-table-column>
       <el-table-column label="产品名称" align="center" width="130px">
         <template slot-scope="{row}">
-          {{ row.name }}
+          {{ row.pname }}
         </template>
       </el-table-column>
       <el-table-column label="型号规格" align="center" width="120px">
         <template slot-scope="{row}">
-          <span>{{ row.models }}-{{ row.spec }}</span>
+          <span>{{ row.ptype }}-{{ row.spec }}</span>
         </template>
       </el-table-column>
       <el-table-column label="数量" align="center" width="80px">
@@ -71,7 +71,6 @@
 
 <script>
 import { getList, updateProduct } from '@/api/product'
-import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 

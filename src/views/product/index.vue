@@ -140,7 +140,7 @@ export default {
         pcode: [{ required: true, message: 'code is required', trigger: 'change' }],
         pname: [{ required: true, message: 'phone is required', trigger: 'blur' }],
         ptype: [{ required: true, message: 'city is required', trigger: 'blur' }],
-        pspec: [{ required: true, message: 'address is required', trigger: 'blur' }],
+        pspec: [{ required: true, message: 'address is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
